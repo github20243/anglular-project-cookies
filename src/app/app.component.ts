@@ -78,6 +78,9 @@ export class AppComponent {
     } else if (this.currency === "€") {
       newCurrency = "¥";
       coefficient = 6.9;
+    } else if (this.currency === "¥") {
+      newCurrency = "KGS";
+      coefficient = 87;
     }
 
     this.currency = newCurrency;
@@ -86,6 +89,7 @@ export class AppComponent {
       item.price = +(item.basePrice * coefficient).toFixed(1);
     });
   }
+
 
   confirmOrder() {
     if (this.form.valid) {
