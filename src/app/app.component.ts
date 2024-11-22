@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 
@@ -11,6 +11,8 @@ export class AppComponent {
 
   currency = "$";
   productsData: any;
+  loader = true;
+  loaderShowed = true;
 
   form = this.fb.group({
     product: ["", Validators.required],
@@ -18,11 +20,27 @@ export class AppComponent {
     phone: ["", Validators.required],
   });
 
+  mainImageStyle: any;
+  orderImageStyle: any;
+  @HostListener("document:mousemove", ["$event"])
+  onMouseMove(e: MouseEvent) {
+    this.mainImageStyle = {transform: "translate(" + ((e.clientX * 0.3) / 8) + "px," + ((e.clientY * 0.3) / 8) + "px)"};
+    this.orderImageStyle = {transform: "translate(-" + ((e.clientX * 0.3) / 8) + "px,-" + ((e.clientY * 0.3) / 8) + "px)"};
+  }
+
   constructor(private fb: FormBuilder,private http: HttpClient) {
 
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.loaderShowed = false;
+    },2000);
+
+    setTimeout(() => {
+      this.loader = false;
+    },3000);
+
     this.http.get("https://testologia.ru/cookies").subscribe(data => this.productsData = data);
   }
 
